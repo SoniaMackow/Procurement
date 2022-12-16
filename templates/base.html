@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock title %} | Zamówienia Publiczne</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Charmonman:400,700|Open+Sans:400,600,700&amp;subset=latin-ext"
+          rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+<body bgcolor="#ccffcc">
+   <h1><center><b><i><ins>Zestawienie Umów</ins></i></b></center></h1>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <div class="container-fluid">
+            {% if user.is_authenticated %}
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'list_contract' %}">Lista zawartych Umów</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'create_contract' %}">Dodaj Umowę</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'list_contractor' %}">Lista Firm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'create_contractor' %}">Dodaj Firmę</a>
+            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Wyloguj się</a>
+                </li>
+            {% else%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Zaloguj się</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Zarejestruj się</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20220001710/U/D20221710Lj.pdf">Ustawa Zamówień Publicznych</a>
+                </li>
+
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="container m-4">
+    {% block content %}
+    {% endblock %}
+</div>
+<p>{{ date }}</p>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+   <h1><centre>
+ <img src="https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/298826138_7868975059840298_8994836297198230916_n.jpg?stp=dst-jpg_p720x720&amp;_nc_cat=104&amp;ccb=1-7&amp;_nc_sid=e3f864&amp;_nc_ohc=KRa1yWgi5ggAX_o1nmo&amp;_nc_oc=AQn3JnvEnCm7ZNpxfAWGl1wYE41ACU97WoPaZs86RUHQzbNHkBABEeALKIXjZ1e4F20&amp;_nc_ht=scontent-frt3-1.xx&amp;oh=00_AfDkO2chm4I5TmNvs-TQEpevNBt8G9sgEbZqmLtlpGemag&amp;oe=639BCA40" width="1000" height="900" alt="" />
+   </centre></h1>
+</body>
+</html>

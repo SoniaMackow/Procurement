@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card w-75">
+        <div class="card-header">
+            <span> {{ contract.title }}</span>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">{{ contract.end_date }}</li>
+                <li class="list-group-item">{{ contract.start_date_date }}</li>
+                <li class="list-group-item">{{ contract.value_contract }}</li>
+                <li class="list-group-item">{{ contract.contractor }}</li>
+                <li class="list-group-item">{{ contract.type }}</li>
+            </ul>
+        </div>
+    </div>
+    <p>
+    <form method="post" action="{% url 'add_comment' contract.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
+    </p>
+    <ul class="list-group">
+        {% for comment in contract.comment_set.all %}
+            <li class="list-group-item">{{ comment.text }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

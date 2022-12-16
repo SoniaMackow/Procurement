@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p><input type="text" name="name" placeholder="Nazwa Wykonawcy"></p>
+        <p><input type="text" name="nip_number" placeholder="Numer NIP"></p>
+        <p><input type="text" name="nameStreet" placeholder="ulica"</p>
+        <p><input type="text" name="zip_code" placeholder="Kod pocztowy"</p>
+        <p><input type="text" name="city" placeholder="Miasto"</p>
+        <p><input type="submit"></p>
+    </form>
+{% endblock %}
