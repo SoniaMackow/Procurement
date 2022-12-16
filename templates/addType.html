@@ -4,6 +4,13 @@
     <form method="post">
         {% csrf_token %}
         <p><input type="text" name="type_procurement" placeholder="Typ zamówienia"></p>
+        <label>
+            Contract:
+            {%  for c in con %}
+            <option value="{{ c.pk }}">{{ c.name }}</option>
+            {% endfor %}
+        </label>
+
         <p><input type="submit"></p>
     </form>
 {% endblock %}

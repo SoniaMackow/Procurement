@@ -23,29 +23,31 @@ class AddTheContractorView(View):
         TheContractor.objects.create(name=name, number_NIP=number_NIP, nameStreet=nameStreet, city=city)
         return redirect('list_contractor')
 
+
 class ListContractorView(View):
 
     def get(self, request):
         contractor = TheContractor.objects.all()
         return render(request, 'ContractorList.html', {'contractor': contractor})
 
+
 class AddContractView(View):
     def get(self, request):
-        contractor = TheContractor.objects.all()
-        typ_procurement = TypeProcurement.objects.all()
-        return render(request, 'addContract.html', {'contractor': contractor, 'typ_procurement': typ_procurement})
+        form = ContractAddForm()
+        return render(request, 'form.html', {'form': form})
+
     def post(self, request):
-        form = TheContractorAddForm(request.POST)
+        form = ContractAddForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data['title']
             contractor = form.cleaned_data['contractor']
-            type = form.cleaned_data['type']
             value_contract = form.cleaned_data['value_contract']
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
-            Contract.objects.create(title=title, contractor=contractor, type=type, value_contract=value_contract,
-                                    start_date=start_date, end_date=end_date)
-            return redirect('/')
+            con = Contract.objects.create(title=title, value_contract=value_contract,
+                                          start_date=start_date, end_date=end_date)
+            con.contractor.set(contractor)
+            return redirect('list_contract')
         return render(request, 'form.html', {'form': form})
 
 
@@ -54,30 +56,35 @@ class ListContractView(View):
         contract = Contract.objects.all()
         return render(request, 'ContractList.html', {'contract': contract})
 
-class AddTypeProView(View):
 
+class AddTypeProView(View):
     def get(self, request):
-        form = addTypeProcurementForm()
-        return render(request, 'form.html', {'form': form})
+        con = Contract.objects.all()
+        return render(request, 'addType.html', {'con': con})
 
     def post(self, request):
-        form = addTypeProcurementForm(request.POST)
         type_procurement = request.POST.get('type_procurement')
-        TypeProcurement.objects.create(type_procurement=type_procurement)
-        return redirect('list_typ')
+        contract = request.POST.get('contract')
+        TypeProcurement.objects.create(type_procurement=type_procurement, contract=contract)
+        return render(request, 'form.html', {'form': form}, )
+
+
 class ListTypView(View):
     def get(self, request):
         typ_procurement = TypeProcurement.objects.all()
         return render(request, 'TypList.html', {'typ_procurement': typ_procurement})
 
+
 class AddProcedureView(View):
     def get(self, request):
         form = AddProcedureForm()
         return render(request, 'form.html', {'form': form})
+
     def post(self, request):
         form = AddProcedureForm(request.POST)
 
-        return render(request, 'form.html', {'form': form},)
+        return render(request, 'form.html', {'form': form}, )
+
 
 class ContractDetailView(View):
 
@@ -100,11 +107,12 @@ class AddCommentView(PermissionRequiredMixin, View):
             comment.save()
             return redirect('detail_contract', contract_pk)
 
+
 class LoginView(View):
 
     def get(self, request):
         form = LoginForm()
-        return render(request, 'form.html', {'form':form})
+        return render(request, 'form.html', {'form': form})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -117,7 +125,8 @@ class LoginView(View):
                 login(request, user)
                 return redirect("index")
             message = "nie poprawne hasło lub/i nazwa użytkownika"
-        return render(request, 'form.html', {'form': form, 'message':message})
+        return render(request, 'form.html', {'form': form, 'message': message})
+
 
 class LogoutView(View):
     def get(self, request):
@@ -129,7 +138,7 @@ class RegisterView(View):
 
     def get(self, request):
         form = UserCreateForm()
-        return render(request, 'form.html', {'form':form})
+        return render(request, 'form.html', {'form': form})
 
     def post(self, request):
         form = UserCreateForm(request.POST)
@@ -138,4 +147,4 @@ class RegisterView(View):
             u.set_password(form.cleaned_data['password'])
             u.save()
             return redirect("index")
-        return render(request, 'form.html', {'form':form})
+        return render(request, 'form.html', {'form': form})

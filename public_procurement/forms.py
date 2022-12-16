@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 import public_procurement
-from public_procurement.models import TheContractor, TypeProcurement, Comment, Procedure
+from public_procurement.models import TheContractor, Comment, Procedure, Contract, TypeProcurement
 
 
 class TheContractorAddForm(forms.ModelForm):
@@ -14,24 +14,32 @@ class TheContractorAddForm(forms.ModelForm):
 
 class ContractAddForm(forms.Form):
     title = forms.CharField(max_length=458)
-    contractor = forms.ModelChoiceField(
-        queryset=TheContractor.objects.all(), widget=forms.RadioSelect
+    contractor = forms.ModelMultipleChoiceField(
+        queryset=TheContractor.objects.all(), widget=forms.CheckboxSelectMultiple()
     )
-    type = forms.ModelChoiceField(
-        queryset=TypeProcurement.objects, widget=forms.RadioSelect
-    )
-    value_contract = forms.IntegerField()
+    value_contract = forms.DecimalField(max_digits=10, decimal_places=2)
     start_date = forms.DateField()
     end_date = forms.DateField()
 
+    def clean(self):
+        cleaned_data = super().clean()  ## wykorzystuje metody z min-year czy movieadd
+        return cleaned_data
+
 
 class addTypeProcurementForm(forms.ModelForm):
+    type_procurement = forms.CharField(max_length=258)
+    contractor = forms.ModelMultipleChoiceField(
+        queryset=Contract.objects, widget=forms.CheckboxSelectMultiple()
+    )
     class Meta:
         model = TypeProcurement
         fields = "__all__"
+    def clean(self):
+        cleaned_data = super().clean()  ## wykorzystuje metody z min-year czy movieadd
+        return cleaned_data
+
 
 class AddProcedureForm(forms.ModelForm):
-
     class Meta:
         model = Procedure
         fields = "__all__"

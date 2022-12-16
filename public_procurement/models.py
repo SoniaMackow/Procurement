@@ -16,25 +16,19 @@ class TheContractor(models.Model):
 
 class Contract(models.Model):
     title = models.CharField(max_length=458)
-    contractor = models.ManyToManyField(TheContractor)
+    contractor = models.ManyToManyField('TheContractor')
     value_contract = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField()
     end_date = models.DateField()
-    type = models.ForeignKey('TypeProcurement', on_delete=models.CASCADE)
-
     def __str__(self):
-        return f"{self.title} {self.contractor} {self.type} {self.value_contract} {self.year} {self.start_date} {self.end_date}"
-
-    @property
-    def get_absolute_url(self):
-        return reverse('detail_contract', args=(self.id,))
-
+        return f'{self.title}'
 
 class TypeProcurement(models.Model):
     type_procurement = models.CharField(max_length=258)
+    contract = models.ForeignKey('Contract', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.type_procurement}"
+        return f"{self.type_procurement} {self.contract}"
 
 
 class Procedure(models.Model):
@@ -44,7 +38,7 @@ class Procedure(models.Model):
     end_date_procedure = models.DateField()
 
     def __str__(self):
-        return f"{self.name_procedure} {self.data_initiation} {self.value} {self.e}"
+        return f"{self.name_procedure} {self.data_initiation} {self.value} "
 
 
 class Comment(models.Model):
