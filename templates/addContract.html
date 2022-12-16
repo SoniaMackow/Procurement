@@ -8,7 +8,10 @@
         <p>
             <label>
                 Wykonawca:
-                <select>
+                <select name = "contractor_choice">
+                    {% for c in contractor %}
+                    <option value = "{{ c.pk }}">{{ c.name }}</option>
+                    {% endfor %}
                     <li>
                         name="list_contractor"
                     </li>>
@@ -18,11 +21,25 @@
         <p>
             <label>
                 Typ zamówienia:
-                <select name="type_procurement">
+                <select name = "type_choice">
+                    {% for t in typ_procurement %}
+                    <option value = "{{ t.pk }}">{{ t.type_procurement }}</option>
+                    {% endfor %}
+                    <li>
+                        name="list_typ"
+                    </li>>
                 </select>
             </label>
         </p>
-        <p><input type="date" name="contract_date" placeholder="data podpisania umowy"</p>
+    <label>
+        Data podpisania Umowy
+    </label>
+        <p><input type="date" name="start_date" placeholder="Data podpisania Umowy"</p>
+        <p><label>
+        Data końca Umowy
+    </label></p>
+        <p><input type="date" name="end_date" placeholder="Data zakończenia Umowy"</p>
+
         <p><input type="submit"></p>
     </form>
 {% endblock %}

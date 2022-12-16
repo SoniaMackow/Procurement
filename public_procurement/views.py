@@ -31,20 +31,23 @@ class ListContractorView(View):
 
 class AddContractView(View):
     def get(self, request):
-        form = TheContractorAddForm()
-        return render(request, 'form.html', {'form': form} )
-
-
+        contractor = TheContractor.objects.all()
+        typ_procurement = TypeProcurement.objects.all()
+        return render(request, 'addContract.html', {'contractor': contractor, 'typ_procurement': typ_procurement})
     def post(self, request):
         form = TheContractorAddForm(request.POST)
-        title = request.POST.get('title')
-        contractor = request.POST.get('contarctor')
-        type = request.POST.get('type')
-        value_contract = request.POST.get('value_contract')
-        start_date = request.POST.get('name')('start_date')
-        end_date = request.POST.get('end_date')
-        Contract.objects.create(title=title, contractor=contractor, type=type, value_contract=value_contract, start_date=start_date, end_date=end_date)
-        return redirect('list_contract')
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            contractor = form.cleaned_data['contractor']
+            type = form.cleaned_data['type']
+            value_contract = form.cleaned_data['value_contract']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            Contract.objects.create(title=title, contractor=contractor, type=type, value_contract=value_contract,
+                                    start_date=start_date, end_date=end_date)
+            return redirect('/')
+        return render(request, 'form.html', {'form': form})
+
 
 class ListContractView(View):
     def get(self, request):
@@ -59,21 +62,21 @@ class AddTypeProView(View):
 
     def post(self, request):
         form = addTypeProcurementForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-        return render(request, 'form.html', {'form': form},)
+        type_procurement = request.POST.get('type_procurement')
+        TypeProcurement.objects.create(type_procurement=type_procurement)
+        return redirect('list_typ')
+class ListTypView(View):
+    def get(self, request):
+        typ_procurement = TypeProcurement.objects.all()
+        return render(request, 'TypList.html', {'typ_procurement': typ_procurement})
 
 class AddProcedureView(View):
-
     def get(self, request):
         form = AddProcedureForm()
         return render(request, 'form.html', {'form': form})
     def post(self, request):
         form = AddProcedureForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+
         return render(request, 'form.html', {'form': form},)
 
 class ContractDetailView(View):

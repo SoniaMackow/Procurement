@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p><input type="text" name="type_procurement" placeholder="Typ zamówienia"></p>
+        <p><input type="submit"></p>
+    </form>
+{% endblock %}

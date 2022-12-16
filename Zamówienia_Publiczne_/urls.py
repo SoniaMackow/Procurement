@@ -31,4 +31,6 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
+    path('addType/', views.AddTypeProView.as_view(), name='add_type'),
+    path('listTyp/', views.ListTypView.as_view(), name='list_typ')
 ]
