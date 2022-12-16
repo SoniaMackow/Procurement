@@ -11,7 +11,7 @@ class TheContractor(models.Model):
     city = models.CharField(max_length=128)
 
     def __str__(self):
-        return f"{self.name} {self.city}"
+        return f"{self.name} -  {self.nameStreet}  - {self.city}  - {self.number_NIP}  - {self.nameStreet} - {self.city}"
 
 
 class Contract(models.Model):
@@ -21,14 +21,15 @@ class Contract(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     def __str__(self):
-        return f'{self.title}'
-
+        return f'{self.title} {self.contractor}'
+    def get_absolute_url(self):
+        return reverse('detail_contract', args=(self.id,))
 class TypeProcurement(models.Model):
     type_procurement = models.CharField(max_length=258)
     contract = models.ForeignKey('Contract', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.type_procurement} {self.contract}"
+        return f"{self.type_procurement} -  {self.contract}"
 
 
 class Procedure(models.Model):
@@ -38,7 +39,7 @@ class Procedure(models.Model):
     end_date_procedure = models.DateField()
 
     def __str__(self):
-        return f"{self.name_procedure} {self.data_initiation} {self.value} "
+        return f"{self.name_procedure}-- {self.data_initiation} ---{self.value}--{self.end_date_procedure} "
 
 
 class Comment(models.Model):

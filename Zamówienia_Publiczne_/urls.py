@@ -22,15 +22,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name='base.html'), name='index'),
     path('contract/<int:pk>/', views.ContractDetailView.as_view(), name='detail_contract'),
-    path('addContract', views.AddContractView.as_view(), name='create_contract'),
-    path('listContract', views.ListContractView.as_view(), name='list_contract'),
-    path('addContractor', views.AddTheContractorView.as_view(), name='create_contractor'),
-    path('listContractor', views.ListContractorView.as_view(), name='list_contractor'),
+    path('addContract/', views.AddContractView.as_view(), name='create_contract'),
+    path('listContract/', views.ListContractView.as_view(), name='list_contract'),
+    path('addContractor/', views.AddTheContractorView.as_view(), name='create_contractor'),
+    path('listContractor/', views.ListContractorView.as_view(), name='list_contractor'),
     path('contract/<int:pk>/', views.ContractDetailView.as_view(), name='detail_contract'),
-    path('add_comment/<int:movie_pk>/', views.AddCommentView.as_view(), name='add_comment'),
+    path('add_comment/<int:contract_pk>/', views.AddCommentView.as_view(), name='add_comment'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('addType/', views.AddTypeProView.as_view(), name='add_type'),
-    path('listTyp/', views.ListTypView.as_view(), name='list_typ')
+    path('listTyp/', views.ListTypView.as_view(), name='list_typ'),
+    path('addProcedure/', views.AddProcedureView.as_view(), name='create_procedure'),
+    path('listProcedure/', views.ListProcedureView.as_view(), name='list_procedure' )
 ]
