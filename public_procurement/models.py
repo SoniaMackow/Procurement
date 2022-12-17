@@ -1,3 +1,5 @@
+from types import NoneType
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -10,9 +12,9 @@ class TheContractor(models.Model):
     nameStreet = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
 
-    def __str__(self):
+    def __str__(self): #to jest to dzięki czemu wyświetla się w naszym języku poszczególne elementy}
         return f"{self.name} -  {self.nameStreet}  - {self.city}  - {self.number_NIP}  - {self.nameStreet} - {self.city}"
-
+#model na potrzeby utworzenia obiektu "TheContractor czyli Wykonawca"
 
 class Contract(models.Model):
     title = models.CharField(max_length=458)
@@ -21,7 +23,11 @@ class Contract(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     def __str__(self):
-        return f'{self.title} {self.contractor}'
+        text = ""
+        for s in {self.contractor.all()}:
+            for x in s:
+               text += x.name
+        return f'{self.title} {text}'
     def get_absolute_url(self):
         return reverse('detail_contract', args=(self.id,))
 class TypeProcurement(models.Model):

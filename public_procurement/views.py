@@ -46,7 +46,8 @@ class AddContractView(View):
             value_contract = form.cleaned_data['value_contract']
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
-            con = Contract.objects.create(title=title, contractor=contractor, value_contract=value_contract,
+            con = Contract.objects.create(title=title,
+                                          value_contract=value_contract,
                                           start_date=start_date, end_date=end_date)
             con.contractor.set(contractor)
             return redirect('list_contract')
