@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import CreateView
 import public_procurement
 from public_procurement.forms import TheContractorAddForm, ContractAddForm, AddProcedureForm, \
-    CommentAddForm, LoginForm, UserCreateForm
+    CommentAddForm, LoginForm, UserCreateForm, AddTypeForm
 from public_procurement.models import TheContractor, Contract, TypeProcurement, Comment, Procedure
 
 
@@ -62,13 +62,18 @@ class ListContractView(View):
 
 class AddTypeProView(View):
     def get(self, request):
-        cont = Contract.objects.all()
-        return render(request, 'addType.html', {'cont': cont})
+        form = AddTypeForm()
+        return render(request, 'form.html', {'form': form})
 
     def post(self, request):
-        type_procurement = request.POST.get('type_procurement')
-        TypeProcurement.objects.create(type_procurement=type_procurement)
-        return redirect('list_typ')
+        form = AddTypeForm(request.POST)
+        if form.is_valid():
+            type_procurement = form.cleaned_data['type_procurement']
+            contract = form.cleaned_data['contract']
+            t = TypeProcurement.objects.create(type_procurement=type_procurement)
+            t.contract.set(contract)
+            return redirect('list_typ')
+        return render(request, 'form.html', {'form': form})
 
 
 

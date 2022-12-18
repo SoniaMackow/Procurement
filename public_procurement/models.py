@@ -27,15 +27,19 @@ class Contract(models.Model):
         for s in {self.contractor.all()}:
             for x in s:
                text += x.name
-        return f'{self.title} {text}'
+        return f'{self.title} --- {text} --- {self.value_contract} -- {self.start_date}---{self.end_date}'
     def get_absolute_url(self):
         return reverse('detail_contract', args=(self.id,))
 class TypeProcurement(models.Model):
     type_procurement = models.CharField(max_length=258)
-    contract = models.ForeignKey('Contract', on_delete=models.CASCADE, null=True)
+    contract = models.ManyToManyField('Contract')
 
     def __str__(self):
-        return f"{self.type_procurement} -  {self.contract}"
+        text = ""
+        for s in {self.contract.all()}:
+            for t in s:
+                text += t.title
+        return f"{self.type_procurement} -  {text}"
 
 
 class Procedure(models.Model):

@@ -3,9 +3,11 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 import public_procurement
-from public_procurement.models import TheContractor, Comment, Procedure, Contract
+from public_procurement.models import TypeProcurement, TheContractor, Comment, Procedure, Contract
 
-
+class AddTypeForm(forms.Form):
+    type_procurement = forms.CharField(max_length=258)
+    contract = forms.ModelMultipleChoiceField(queryset=Contract.objects.all(), widget=forms.CheckboxSelectMultiple)
 class TheContractorAddForm(forms.ModelForm):
     class Meta:
         model = TheContractor
