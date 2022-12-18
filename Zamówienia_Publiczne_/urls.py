@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name='base.html'), name='index'),
     path('contract/<int:pk>/', views.ContractDetailView.as_view(), name='detail_contract'),
+    path('procedure/<int:pk>/', views.ProcedureDetailView.as_view(), name='detail_procedure'),
     path('addContract/', views.AddContractView.as_view(), name='create_contract'),
     path('listContract/', views.ListContractView.as_view(), name='list_contract'),
     path('addContractor/', views.AddTheContractorView.as_view(), name='create_contractor'),

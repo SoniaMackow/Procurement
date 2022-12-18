@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
+from djmoney.forms.fields import MoneyField
 import public_procurement
-from public_procurement.models import TypeProcurement, TheContractor, Comment, Procedure, Contract
+from public_procurement.models import TypeProcurement, TheContractor, Comment, Procedure, Contract, CommentProcedure, \
+    CommentProcedure
+
 
 class AddTypeForm(forms.Form):
     type_procurement = forms.CharField(max_length=258)
@@ -19,7 +21,7 @@ class ContractAddForm(forms.Form):
     contractor = forms.ModelMultipleChoiceField(
         queryset=TheContractor.objects.all(), widget=forms.CheckboxSelectMultiple()
     )
-    value_contract = forms.DecimalField(max_digits=10, decimal_places=2)
+    value_contract = MoneyField(decimal_places=2, default_currency='PLN', max_digits=11)
     start_date = forms.DateField()
     end_date = forms.DateField()
 
@@ -35,6 +37,10 @@ class CommentAddForm(forms.ModelForm):
         model = Comment
         fields = ['text']
 
+class CommentProcedureAddForm(forms.ModelForm):
+    class Meta:
+        model = CommentProcedure
+        fields = ['text']
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)

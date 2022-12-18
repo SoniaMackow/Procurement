@@ -21,9 +21,3 @@ def user():
     u = User.objects.create(username='tadeusz')
     return u
 
-@pytest.fixture
-def user_with_permission():
-    u = User.objects.create(username='tadeusz')
-    permission = Permission.objects.get(codename='add_comment')
-    u.user_permissions.add(permission)
-    return u

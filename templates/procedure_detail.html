@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card w-75">
+        <div class="card-header">
+            <span> {{ procedure.name_procedure }}</span>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <p>Data wszczęcia postępowania</p>
+                <li class="list-group-item">{{ procedure.data_initiation }}</li>
+                <p>Data zakończenia postępowania</p>
+                <li class="list-group-item">{{ procedure.end_date_procedure }}</li>
+                <p>Wartość jaką Zamawiający zamierzał przeznaczyć na sfinansowanie zadania</p>
+                <li class="list-group-item">{{ procedure.value }}</li>
+            </ul>
+        </div>
+    </div>
+    <p>
+    <form method="post" action="{% url 'add_comment' procedure.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
+    </p>
+    <ul class="list-group">
+        {% for comment in procedure.comment_set.all %}
+            <li class="list-group-item">{{ comment.text }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

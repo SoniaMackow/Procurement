@@ -4,9 +4,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView
 import public_procurement
-from public_procurement.forms import TheContractorAddForm, ContractAddForm, AddProcedureForm, \
-    CommentAddForm, LoginForm, UserCreateForm, AddTypeForm
-from public_procurement.models import TheContractor, Contract, TypeProcurement, Comment, Procedure
+from public_procurement.forms import TheContractorAddForm, ContractAddForm, AddProcedureForm, CommentAddForm, LoginForm, UserCreateForm, AddTypeForm, CommentProcedureAddForm
+from public_procurement.models import TheContractor, Contract, TypeProcurement, Comment, Procedure, CommentProcedure
 
 
 class AddTheContractorView(View):
@@ -102,6 +101,13 @@ class ListProcedureView(View):
         procedure = Procedure.objects.all()
         return render(request, 'ProcedureList.html', {'procedure': procedure})
 
+class ProcedureDetailView(View):
+
+    def get(self, request, pk):
+        procedure = Procedure.objects.get(pk=pk)
+        form = CommentAddForm()
+        return render(request, 'procedure_detail.html', {'procedure': procedure, 'form': form})
+
 class ContractDetailView(View):
 
     def get(self, request, pk):
@@ -121,6 +127,17 @@ class AddCommentView(View):
             comment.author = request.user
             comment.save()
             return redirect('detail_contract', contract_pk)
+
+class AddCommentProcedureView(View):
+    def post(self, request, procedure_pk):
+        form = CommentProcedureAddForm(request.POST)
+        procedure = Procedure.objects.get(pk=procedure_pk)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.procedure = procedure
+            comment.author = request.user
+            comment.save()
+            return redirect('detail_procedure', procedure_pk)
 
 
 class LoginView(View):
